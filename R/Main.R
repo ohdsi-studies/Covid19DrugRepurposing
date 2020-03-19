@@ -41,8 +41,7 @@
 #'                             performance.
 #' @param createCohorts        Create the cohortTable table with the exposure and outcome cohorts?
 #' @param runSccs              Perform the SCCS analyses? Requires the cohorts have been created.
-#' @param runDiagnostics       Generate diagnostics?
-#' @param negativeControlsOnly Only generate estimates for the negative controls?
+#' @param runSccsDiagnostics   Generate SCCSdiagnostics?
 #' @param maxCores             How many parallel cores should be used? If more cores are made available
 #'                             this can speed up the analyses.
 #'
@@ -55,8 +54,7 @@ execute <- function(connectionDetails,
                     outputFolder,
                     createCohorts = TRUE,
                     runSccs = TRUE,
-                    runDiagnostics = TRUE,
-                    negativeControlsOnly = FALSE,
+                    runSccsDiagnostics = TRUE,
                     maxCores = 4) {
   if (!file.exists(outputFolder)) {
     dir.create(outputFolder, recursive = TRUE)
@@ -84,23 +82,23 @@ execute <- function(connectionDetails,
   
   if (runSccs) {
     ParallelLogger::logInfo("Running SCCS analyses")
-    runSccs(connectionDetails = connectionDetails,
+    runSelfControlledCaseSeries(connectionDetails = connectionDetails,
             cdmDatabaseSchema = cdmDatabaseSchema,
-            cohortDatabaseSchema = cohortDatabaseSchema,
-            cohortTable = cohortTable,
+            outcomeDatabaseSchema = cohortDatabaseSchema,
+            outcomeTable = cohortTable,
+            exposureDatabaseSchema = cdmDatabaseSchema,
+            exposureTable = "drug_era",
             oracleTempSchema = oracleTempSchema,
             outputFolder = outputFolder,
-            maxCores = maxCores,
-            negativeControlsOnly = negativeControlsOnly)
+            maxCores = maxCores)
   }
   
-  if (runDiagnostics) {
+  if (runSccsDiagnostics) {
     ParallelLogger::logInfo("Running diagnostics")
-    runDiagnostics(outputFolder = outputFolder,
-                   maxCores = maxCores)
+    # runDiagnostics(outputFolder = outputFolder,
+    #                maxCores = maxCores)
     
   }
-  
   
   invisible(NULL)
 }

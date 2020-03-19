@@ -1,6 +1,6 @@
 Package: Covid19DrugRepurposing
 Type: Package
-Title: Evaluation of the safety and Efficacy of Existing Drugs Considered for Treatment of COVID-19.
+Title: Evaluation of the Safety and Efficacy of Existing Drugs Considered for Treatment of COVID-19
 Version: 0.0.1
 Date: 2020-03-19
 Authors@R: c(

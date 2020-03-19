@@ -4,46 +4,46 @@ options(fftempdir = "s:/FFtemp")
 connectionDetails <- createConnectionDetails(dbms = "pdw",
                                              server = Sys.getenv("PDW_SERVER"),
                                              port = Sys.getenv("PDW_PORT"))
-studyFolder <- "s:/PreClinToRwe"
+studyFolder <- "s:/Covid19DrugRepurposing"
 maxCores <- parallel::detectCores()
 
 # CCAE settings
 databaseId <- "CCAE"
-cdmDatabaseSchema <- "CDM_IBM_CCAE_V1061.dbo"
+cdmDatabaseSchema <- "CDM_IBM_CCAE_V1103.dbo"
 cohortDatabaseSchema <- "scratch.dbo"
-cohortTable <- "mschuemi_preclinTorwe_ccae"
+cohortTable <- "mschuemi_covid19_ccae"
 oracleTempSchema <- NULL
 outputFolder <- file.path(studyFolder, databaseId)
 
 # MDCR settings
 databaseId <- "MDCR"
-cdmDatabaseSchema <- "CDM_IBM_MDCR_V1062.dbo"
+cdmDatabaseSchema <- "CDM_IBM_MDCR_V1104.dbo"
 cohortDatabaseSchema <- "scratch.dbo"
-cohortTable <- "mschuemi_preclinTorwe_mdcr"
+cohortTable <- "mschuemi_covid19_mdcr"
 oracleTempSchema <- NULL
 outputFolder <- file.path(studyFolder, databaseId)
 
 # MDCD settings
 databaseId <- "MDCD"
-cdmDatabaseSchema <- "CDM_IBM_MDCD_V1023.dbo"
+cdmDatabaseSchema <- "CDM_IBM_MDCD_V1105.dbo"
 cohortDatabaseSchema <- "scratch.dbo"
-cohortTable <- "mschuemi_preclinTorwe_mdcd"
-oracleTempSchema <- NULL
-outputFolder <- file.path(studyFolder, databaseId)
-
-# Optum settings
-databaseId <- "Optum"
-cdmDatabaseSchema <- "CDM_OPTUM_EXTENDED_SES_V1065.dbo"
-cohortDatabaseSchema <- "scratch.dbo"
-cohortTable <- "mschuemi_preclinTorwe_optum"
+cohortTable <- "mschuemi_covid19_mdcd"
 oracleTempSchema <- NULL
 outputFolder <- file.path(studyFolder, databaseId)
 
 # JMDC settings
 databaseId <- "JMDC"
-cdmDatabaseSchema <- "CDM_JMDC_V1063.dbo"
+cdmDatabaseSchema <- "CDM_JMDC_V1106.dbo"
 cohortDatabaseSchema <- "scratch.dbo"
-cohortTable <- "mschuemi_preclinTorwe_jmdc"
+cohortTable <- "mschuemi_covid19_jmdc"
+oracleTempSchema <- NULL
+outputFolder <- file.path(studyFolder, databaseId)
+
+# Optum settings
+databaseId <- "Optum"
+cdmDatabaseSchema <- "CDM_OPTUM_EXTENDED_DOD_V1107.dbo"
+cohortDatabaseSchema <- "scratch.dbo"
+cohortTable <- "mschuemi_covid19_optum"
 oracleTempSchema <- NULL
 outputFolder <- file.path(studyFolder, databaseId)
 
@@ -55,6 +55,5 @@ execute(connectionDetails = connectionDetails,
         outputFolder = outputFolder,
         createCohorts = FALSE,
         runSccs = TRUE,
-        runDiagnostics = TRUE,
-        negativeControlsOnly = TRUE,
+        runSccsDiagnostics = TRUE,
         maxCores = maxCores)

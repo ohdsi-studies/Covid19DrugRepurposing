@@ -13,8 +13,7 @@ execute(
   outputFolder,
   createCohorts = TRUE,
   runSccs = TRUE,
-  runDiagnostics = TRUE,
-  negativeControlsOnly = FALSE,
+  runSccsDiagnostics = TRUE,
   maxCores = 4
 )
 }
@@ -46,9 +45,7 @@ performance.}
 
 \item{runSccs}{Perform the SCCS analyses? Requires the cohorts have been created.}
 
-\item{runDiagnostics}{Generate diagnostics?}
-
-\item{negativeControlsOnly}{Only generate estimates for the negative controls?}
+\item{runSccsDiagnostics}{Generate SCCSdiagnostics?}
 
 \item{maxCores}{How many parallel cores should be used? If more cores are made available
 this can speed up the analyses.}
