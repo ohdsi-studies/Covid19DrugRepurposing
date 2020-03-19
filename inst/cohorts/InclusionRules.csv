@@ -1,13 +1,13 @@
 "cohortName","ruleSequence","ruleName","cohortId"
 "HydroxycholoroquineNewUsers",0,"age >= 18",1773737
 "HydroxycholoroquineNewUsers",1,"has RA in 5 year prior",1773737
-"HydroxycholoroquineNewUsers",2,"does not have any DMARD any time prior",1773737
-"HydroxycholoroquineNewUsers",3,"exactly 1 DMARD on or 7d after",1773737
 "HydroxycholoroquineNewUsers",4,"no prior cancer",1773737
 "HydroxycholoroquineNewUsers",5,"no prior inflammatory arthropathy",1773737
-"Methoxtrexate",0,"age >= 18",1773738
-"Methoxtrexate",1,"has RA in 5 year prior",1773738
-"Methoxtrexate",2,"does not have any DMARD any time prior",1773738
-"Methoxtrexate",3,"exactly 1 DMARD on or 7d after",1773738
-"Methoxtrexate",4,"no prior cancer",1773738
-"Methoxtrexate",5,"no prior inflammatory arthropathy",1773738
+"HydroxycholoroquineNewUsers",2,"does not have any DMARD any time prior",1773737
+"HydroxycholoroquineNewUsers",3,"exactly 1 DMARD on or 7d after",1773737
+"MethoxtrexateNewUsers",0,"age >= 18",1773738
+"MethoxtrexateNewUsers",1,"has RA in 5 year prior",1773738
+"MethoxtrexateNewUsers",2,"does not have any DMARD any time prior",1773738
+"MethoxtrexateNewUsers",3,"exactly 1 DMARD on or 7d after",1773738
+"MethoxtrexateNewUsers",4,"no prior cancer",1773738
+"MethoxtrexateNewUsers",5,"no prior inflammatory arthropathy",1773738

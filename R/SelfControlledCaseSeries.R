@@ -54,7 +54,7 @@ runSelfControlledCaseSeries <- function(connectionDetails,
     sccsSummaryFile <- file.path(outputFolder, "sccsSummary.rds")
     if (!file.exists(sccsSummaryFile)) {
         eoList <- createTos(outputFolder)
-        sccsAnalysisListFile <- system.file("settings", "sccsAnalysisSettings.txt", package = "Covid19DrugRepurposing")
+        sccsAnalysisListFile <- system.file("settings", "sccsAnalysisSettings.json", package = "Covid19DrugRepurposing")
         sccsAnalysisList <- SelfControlledCaseSeries::loadSccsAnalysisList(sccsAnalysisListFile)
         sccsResult <- SelfControlledCaseSeries::runSccsAnalyses(connectionDetails = connectionDetails,
                                                                 cdmDatabaseSchema = cdmDatabaseSchema,
@@ -77,7 +77,7 @@ runSelfControlledCaseSeries <- function(connectionDetails,
         saveRDS(sccsSummary, sccsSummaryFile)
     }
     delta <- Sys.time() - start
-    writeLines(paste("Completed SCCS analyses in", signif(delta, 3), attr(delta, "units")))
+    ParallelLogger::logInfo(paste("Completed SCCS analyses in", signif(delta, 3), attr(delta, "units")))
 }
 
 createTos <- function(outputFolder) {
@@ -97,4 +97,30 @@ createTos <- function(outputFolder) {
     }
     tosList <- lapply(1:nrow(tos), createTo)
     return(tosList)
+}
+
+runSccsDiagnostics <- function(outputFolder = outputFolder,
+                               maxCores = maxCores) {
+  diagnosticsFolder <- file.path(outputFolder, "sccsDiagnostics")
+  if (!file.exists(diagnosticsFolder)) {
+    dir.create(diagnosticsFolder)
+  }
+  sccsSummaryFile <- file.path(outputFolder, "sccsSummary.rds")
+  sccsSummary <- readRDS(sccsSummaryFile)
+  
+  pathToCsv <- system.file("settings", "sccsNegativeControls.csv", package = "Covid19DrugRepurposing")
+  ncs <- read.csv(pathToCsv, stringsAsFactors = FALSE)
+  ncs <- merge(ncs, sccsSummary)
+
+  evaluateSystematicError <- function(subset) {
+    fileName <- file.path(diagnosticsFolder, sprintf("NegativeControls_e%s.png", subset$exposureId[1]))
+    EmpiricalCalibration::plotCalibrationEffect(logRrNegatives = subset$`logRr(Exposure of interest)`,
+                                                seLogRrNegatives = subset$`seLogRr(Exposure of interest)`,
+                                                xLabel = "Incidence Rate Ratio",
+                                                title = subset$exposureName[1],
+                                                showCis = TRUE,
+                                                fileName = fileName)
+    
+  }  
+  lapply(split(ncs, ncs$exposureId), evaluateSystematicError)
 }

@@ -48,7 +48,7 @@ createCohorts <- function(connectionDetails,
     dir.create(outputFolder)
   
   conn <- DatabaseConnector::connect(connectionDetails)
-  
+  on.exit(DatabaseConnector::disconnect(conn))
   .createCohorts(connection = conn,
                  cdmDatabaseSchema = cdmDatabaseSchema,
                  cohortDatabaseSchema = cohortDatabaseSchema,
@@ -85,8 +85,6 @@ createCohorts <- function(connectionDetails,
   colnames(counts) <- SqlRender::snakeCaseToCamelCase(colnames(counts))
   counts <- addCohortNames(counts)
   write.csv(counts, file.path(outputFolder, "CohortCounts.csv"), row.names = FALSE)
-
-  DatabaseConnector::disconnect(conn)
 }
 
 addCohortNames <- function(data, IdColumnName = "cohortDefinitionId", nameColumnName = "cohortName") {
@@ -97,7 +95,7 @@ addCohortNames <- function(data, IdColumnName = "cohortDefinitionId", nameColumn
   
   idToName <- data.frame(cohortId = c(cohortsToCreate$cohortId,
                                       negativeControls$outcomeId),
-                         cohortName = c(as.character(cohortsToCreate$atlasName),
+                         cohortName = c(as.character(cohortsToCreate$fullName),
                                         as.character(negativeControls$outcomeName)))
   idToName <- idToName[order(idToName$cohortId), ]
   idToName <- idToName[!duplicated(idToName$cohortId), ]

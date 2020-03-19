@@ -70,33 +70,31 @@ execute <- function(connectionDetails,
   
   if (createCohorts) {
     ParallelLogger::logInfo("Creating outcome cohorts")
-    connection <- DatabaseConnector::connect(connectionDetails)
-    .createCohorts(connection,
-                   cdmDatabaseSchema = cdmDatabaseSchema,
-                   cohortDatabaseSchema = cohortDatabaseSchema,
-                   cohortTable = cohortTable,
-                   oracleTempSchema = oracleTempSchema,
-                   outputFolder = outputFolder)
-    DatabaseConnector::disconnect(connection)
+    createCohorts(connectionDetails = connectionDetails,
+                  cdmDatabaseSchema = cdmDatabaseSchema,
+                  cohortDatabaseSchema = cohortDatabaseSchema,
+                  cohortTable = cohortTable,
+                  oracleTempSchema = oracleTempSchema,
+                  outputFolder = outputFolder)
   }
   
   if (runSccs) {
     ParallelLogger::logInfo("Running SCCS analyses")
     runSelfControlledCaseSeries(connectionDetails = connectionDetails,
-            cdmDatabaseSchema = cdmDatabaseSchema,
-            outcomeDatabaseSchema = cohortDatabaseSchema,
-            outcomeTable = cohortTable,
-            exposureDatabaseSchema = cdmDatabaseSchema,
-            exposureTable = "drug_era",
-            oracleTempSchema = oracleTempSchema,
-            outputFolder = outputFolder,
-            maxCores = maxCores)
+                                cdmDatabaseSchema = cdmDatabaseSchema,
+                                outcomeDatabaseSchema = cohortDatabaseSchema,
+                                outcomeTable = cohortTable,
+                                exposureDatabaseSchema = cdmDatabaseSchema,
+                                exposureTable = "drug_era",
+                                oracleTempSchema = oracleTempSchema,
+                                outputFolder = outputFolder,
+                                maxCores = maxCores)
   }
   
   if (runSccsDiagnostics) {
-    ParallelLogger::logInfo("Running diagnostics")
-    # runDiagnostics(outputFolder = outputFolder,
-    #                maxCores = maxCores)
+    ParallelLogger::logInfo("Running SCCS diagnostics")
+    runSccsDiagnostics(outputFolder = outputFolder,
+                       maxCores = maxCores)
     
   }
   
