@@ -6,7 +6,7 @@ Evaluation of Existing Drugs for Treatment of COVID-19
 - Analytics use case(s): **Population-Level Estimation**
 - Study type: **Clinical Application**
 - Tags: **Study-a-thon, COVID-19**
-- Study lead: **Martijn Schuemie**
+- Study lead: **Martijn Schuemie, Daniel Prieto-Alhambra**
 - Study lead forums tag: **[schuemie](https://forums.ohdsi.org/u/schuemie)**
 - Study start date: **March 19, 2020**
 - Study end date: **-**

@@ -1,0 +1,101 @@
+exposureId,exposureName,outcomeId,outcomeName,type
+1703687,Acyclovir,1,Hepatic failure,exposure
+1309204,Adenosine,1,Hepatic failure,exposure
+1154343,Albuterol,1,Hepatic failure,exposure
+1557272,Alendronate,1,Hepatic failure,exposure
+919204,Amylases,1,Hepatic failure,exposure
+917006,Benzocaine,1,Hepatic failure,exposure
+1136601,benzonatate,1,Hepatic failure,exposure
+733301,Buspirone,1,Hepatic failure,exposure
+749910,Carisoprodol,1,Hepatic failure,exposure
+1738366,cefprozil,1,Hepatic failure,exposure
+1192710,Chlorpheniramine,1,Hepatic failure,exposure
+1398937,Clonidine,1,Hepatic failure,exposure
+19008009,Cosyntropin,1,Hepatic failure,exposure
+924724,Dicyclomine,1,Hepatic failure,exposure
+1326303,Digoxin,1,Hepatic failure,exposure
+931973,Endopeptidases,1,Hepatic failure,exposure
+19045045,Ergocalciferol,1,Hepatic failure,exposure
+1145379,Ergotamine,1,Hepatic failure,exposure
+757352,Eszopiclone,1,Hepatic failure,exposure
+1763779,Griseofulvin,1,Hepatic failure,exposure
+1163944,Guaifenesin,1,Hepatic failure,exposure
+1101703,homatropine,1,Hepatic failure,exposure
+777221,Hydroxyzine,1,Hepatic failure,exposure
+923672,Hyoscyamine,1,Hepatic failure,exposure
+19127890,Inert Ingredients,1,Hepatic failure,exposure
+1112921,Ipratropium,1,Hepatic failure,exposure
+1383815,Isosorbide,1,Hepatic failure,exposure
+986117,Ketotifen,1,Hepatic failure,exposure
+990760,Lipase,1,Hepatic failure,exposure
+1102527,Meperidine,1,Hepatic failure,exposure
+780369,metaxalone,1,Hepatic failure,exposure
+704943,Methocarbamol,1,Hepatic failure,exposure
+951511,Mupirocin,1,Hepatic failure,exposure
+915855,olopatadine,1,Hepatic failure,exposure
+1799139,Oseltamivir,1,Hepatic failure,exposure
+1335539,Phentolamine,1,Hepatic failure,exposure
+1135766,Phenylephrine,1,Hepatic failure,exposure
+953391,Propantheline,1,Hepatic failure,exposure
+19090761,regadenoson,1,Hepatic failure,exposure
+1516800,Risedronate,1,Hepatic failure,exposure
+1137529,salmeterol,1,Hepatic failure,exposure
+965748,Scopolamine,1,Hepatic failure,exposure
+901318,Sodium Ascorbate,1,Hepatic failure,exposure
+939506,Sodium Bicarbonate,1,Hepatic failure,exposure
+990499,"Sodium Phosphate, Monobasic",1,Hepatic failure,exposure
+1036228,Sucralfate,1,Hepatic failure,exposure
+1037005,Dronabinol,1,Hepatic failure,exposure
+1702559,Tinidazole,1,Hepatic failure,exposure
+1106776,tiotropium,1,Hepatic failure,exposure
+913782,tolterodine,1,Hepatic failure,exposure
+902722,Tobramycin,2,Cardiac arrhythmia,exposure
+933724,Phenazopyridine,2,Cardiac arrhythmia,exposure
+915855,olopatadine,2,Cardiac arrhythmia,exposure
+780369,metaxalone,2,Cardiac arrhythmia,exposure
+918172,Benzoyl Peroxide,2,Cardiac arrhythmia,exposure
+967562,loteprednol etabonate,2,Cardiac arrhythmia,exposure
+757352,Eszopiclone,2,Cardiac arrhythmia,exposure
+981774,adapalene,2,Cardiac arrhythmia,exposure
+917336,Desoximetasone,2,Cardiac arrhythmia,exposure
+996541,fluocinolone,2,Cardiac arrhythmia,exposure
+986790,Azelate,2,Cardiac arrhythmia,exposure
+909795,nepafenac,2,Cardiac arrhythmia,exposure
+19095309,Cholestyramine Resin,2,Cardiac arrhythmia,exposure
+1518148,colesevelam,2,Cardiac arrhythmia,exposure
+955583,Fluorometholone,2,Cardiac arrhythmia,exposure
+939784,butoconazole,2,Cardiac arrhythmia,exposure
+947416,tazarotene,2,Cardiac arrhythmia,exposure
+957393,aluminum chloride,2,Cardiac arrhythmia,exposure
+914053,naftifine,2,Cardiac arrhythmia,exposure
+918222,oxiconazole,2,Cardiac arrhythmia,exposure
+1735947,rifaximin,2,Cardiac arrhythmia,exposure
+938061,selenium sulfide,2,Cardiac arrhythmia,exposure
+1119119,adalimumab,2,Cardiac arrhythmia,exposure
+40161662,besifloxacin,2,Cardiac arrhythmia,exposure
+960988,Diflorasone,2,Cardiac arrhythmia,exposure
+1308368,Midodrine,2,Cardiac arrhythmia,exposure
+1525278,estropipate,2,Cardiac arrhythmia,exposure
+976778,hydroquinone,2,Cardiac arrhythmia,exposure
+916662,dimethicone,2,Cardiac arrhythmia,exposure
+1796435,Cefixime,2,Cardiac arrhythmia,exposure
+928006,Iodoquinol,2,Cardiac arrhythmia,exposure
+42900505,linaclotide,2,Cardiac arrhythmia,exposure
+19056802,alpha Tocopherol,2,Cardiac arrhythmia,exposure
+19088079,pantothenate,2,Cardiac arrhythmia,exposure
+958396,butenafine,2,Cardiac arrhythmia,exposure
+927322,potassium nitrate,2,Cardiac arrhythmia,exposure
+963742,Gramicidin,2,Cardiac arrhythmia,exposure
+950882,clocortolone,2,Cardiac arrhythmia,exposure
+991003,retapamulin,2,Cardiac arrhythmia,exposure
+19024770,Biotin,2,Cardiac arrhythmia,exposure
+1400498,Iron Carbonyl,2,Cardiac arrhythmia,exposure
+939134,sertaconazole,2,Cardiac arrhythmia,exposure
+905078,Trifluridine,2,Cardiac arrhythmia,exposure
+1747005,cefditoren,2,Cardiac arrhythmia,exposure
+937791,bismuth subsalicylate,2,Cardiac arrhythmia,exposure
+947705,podofilox,2,Cardiac arrhythmia,exposure
+912476,Becaplermin,2,Cardiac arrhythmia,exposure
+992153,THONZONIUM,2,Cardiac arrhythmia,exposure
+40224159,alcaftadine,2,Cardiac arrhythmia,exposure
+958134,bismuth subcitrate,2,Cardiac arrhythmia,exposure
