@@ -1,4 +1,32 @@
 cohortId,atlasId,name,fullName
-1773737,1773737,HydroxycholoroquineNewUsers,New users of hydroxychloroquine monotherapy
-1773738,1773738,MethoxtrexateNewUsers,New users of methoxtrexate monotherapy
-1773736,1773736,HepaticFailure,Hepatic failure
+14858,14858,HepaticFailure,Hepatic failure
+14842,14842,Asunaprevir,New users of asunaprevir monotherapy with prior hepatitis C
+14841,14841,Boceprevir,New users of boceprevir monotherapy with prior hepatitis C
+14840,14840,ProteaseInhibitors,New users of hepatis C protease inhibitors with prior hepatitis C
+14839,14839,Glecaprevir,New users of glecaprevir with prior hepatitis C
+14838,14838,Grazoprevir,New users of grazoprevir with prior hepatitis C
+14837,14837,Paritaprevir,New users of paritaprevir with prior hepatitis C
+14836,14836,Simeprevir,New users of simeprevir with prior hepatitis C
+14835,14835,Telaprevir,New users of telaprevir with prior hepatitis C
+14834,14834,IntegraseInhibitor,New users of Integrase inhibitor with prior HIV
+14832,14832,Doravirine,New users of doravirine with prior HIV
+14833,14833,Dolutegravir,New users of dolutegravir with prior HIV
+14831,14831,Efavirenz,New users of efavirenz with prior HIV
+14830,14830,Elvitegravir,New users of elvitegravir with prior HIV
+14829,14829,Etravirine,New users of etravirine with prior HIV
+14828,14828,Nevirapine,New users of Nevirapine with prior HIV
+14826,14826,Raltegravir,New users of raltegravir with prior HIV
+14825,14825,NNRTIs,New users of Non-nucleoside reverse-transcriptase inhibitors (NNRTIs) with prior HIV
+14824,14824,Rilpivirine,New users of rilpivirine with prior HIV
+14823,14823,Lopinavir,New users of lopinavir monotherapy with prior HIV
+14822,14822,NavirProteaseInhibitors,New users of -navir protease inhibitors with prior HIV
+14821,14821,RitonavirOrLopinavir,New users of ritonavir or lopinavir-containing products with prior HIV
+14820,14820,Ritonavir,New users of ritonavir monotherapy with prior HIV
+14819,14819,Baricitinib,New users of Baricitinib with prior rheumatoid arthritis
+14818,14818,Hydroxychloroquine,New users of Hydroxychloroquine with prior rheumatoid arthritis
+14817,14817,Methotrexate,New users of methotrexate with prior rheumatoid arthritis
+14816,14816,Sulfasazine,New users of sulfasazine with prior rheumatoid arthritis
+14814,14814,Sarilumab,New users of sarilumab with prior rheumatoid arthritis
+14815,14815,Tocilizumab,New users of tocilizumab with prior rheumatoid arthritis
+14860,14860,Peginterferon,New users of peginterferon alfa-2b monotherapy with prior hepatitis C
+14859,14859,Ribavirin,New users of ribavirin monotherapy with prior hepatitis C
