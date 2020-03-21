@@ -37,33 +37,49 @@ createSccsAnalysesDetails <- function(fileName) {
   #                                                               createSccsEraDataArgs = createSccsEraDataArgs1,
   #                                                               fitSccsModelArgs = fitSccsModelArgs1)
   
-  covarAllDrugs = SelfControlledCaseSeries::createCovariateSettings(label = "All other exposures",
-                                                                    excludeCovariateIds = "exposureId",
-                                                                    stratifyById = TRUE,
-                                                                    start = 1,
-                                                                    end = 0,
-                                                                    addExposedDaysToEnd = TRUE,
-                                                                    allowRegularization = TRUE)
-
-  createSccsEraDataArgs6 <- SelfControlledCaseSeries::createCreateSccsEraDataArgs(naivePeriod = 365,
+  # covarAllDrugs = SelfControlledCaseSeries::createCovariateSettings(label = "All other exposures",
+  #                                                                   excludeCovariateIds = "exposureId",
+  #                                                                   stratifyById = TRUE,
+  #                                                                   start = 1,
+  #                                                                   end = 0,
+  #                                                                   addExposedDaysToEnd = TRUE,
+  #                                                                   allowRegularization = TRUE)
+  # 
+  # createSccsEraDataArgs6 <- SelfControlledCaseSeries::createCreateSccsEraDataArgs(naivePeriod = 365,
+  #                                                                                 firstOutcomeOnly = TRUE,
+  #                                                                                 covariateSettings = list(covarExposureOfInt1,
+  #                                                                                                          covarAllDrugs))
+  # prior = Cyclops::createPrior("laplace", useCrossValidation = TRUE)
+  # control = Cyclops::createControl(cvType = "auto",
+  #                                  selectorType = "byPid",
+  #                                  startingVariance = 0.01,
+  #                                  noiseLevel = "quiet",
+  #                                  fold = 10,
+  #                                  cvRepetitions = 1,
+  #                                  tolerance = 2e-07)
+  # fitSccsModelArgs2 <- SelfControlledCaseSeries::createFitSccsModelArgs(prior = prior, control = control)
+  # 
+  # sccsAnalysis1 <- SelfControlledCaseSeries::createSccsAnalysis(analysisId = 1,
+  #                                                               description = "Using all other exposures",
+  #                                                               getDbSccsDataArgs = getDbSccsDataArgs1,
+  #                                                               createSccsEraDataArgs = createSccsEraDataArgs6,
+  #                                                               fitSccsModelArgs = fitSccsModelArgs2)
+  ageSettings <- SelfControlledCaseSeries::createAgeSettings(includeAge = TRUE)
+  seasonalitySettings <- SelfControlledCaseSeries::createSeasonalitySettings(includeSeasonality = TRUE)
+  createSccsEraDataArgs1 <- SelfControlledCaseSeries::createCreateSccsEraDataArgs(naivePeriod = 365,
                                                                                   firstOutcomeOnly = TRUE,
-                                                                                  covariateSettings = list(covarExposureOfInt1,
-                                                                                                           covarAllDrugs))
-  prior = Cyclops::createPrior("laplace", useCrossValidation = TRUE)
-  control = Cyclops::createControl(cvType = "auto",
-                                   selectorType = "byPid",
-                                   startingVariance = 0.01,
-                                   noiseLevel = "quiet",
-                                   fold = 10,
-                                   cvRepetitions = 1,
-                                   tolerance = 2e-07)
-  fitSccsModelArgs2 <- SelfControlledCaseSeries::createFitSccsModelArgs(prior = prior, control = control)
-
+                                                                                  covariateSettings = covarExposureOfInt1,
+                                                                                  ageSettings = ageSettings,
+                                                                                  seasonalitySettings = seasonalitySettings)
+  
+  fitSccsModelArgs1 <- SelfControlledCaseSeries::createFitSccsModelArgs()
+  
   sccsAnalysis1 <- SelfControlledCaseSeries::createSccsAnalysis(analysisId = 1,
-                                                                description = "Using all other exposures",
+                                                                description = "Using age and season",
                                                                 getDbSccsDataArgs = getDbSccsDataArgs1,
-                                                                createSccsEraDataArgs = createSccsEraDataArgs6,
-                                                                fitSccsModelArgs = fitSccsModelArgs2)
+                                                                createSccsEraDataArgs = createSccsEraDataArgs1,
+                                                                fitSccsModelArgs = fitSccsModelArgs1)
+  
   sccsAnalysisList <- list(sccsAnalysis1)
   SelfControlledCaseSeries::saveSccsAnalysisList(sccsAnalysisList, fileName)
 }

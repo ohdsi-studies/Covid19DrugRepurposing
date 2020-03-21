@@ -1,7 +1,7 @@
 [
   {
     "analysisId": 1,
-    "description": "Using all other exposures",
+    "description": "Using age and season",
     "getDbSccsDataArgs": {
       "useCustomCovariates": false,
       "useNestingCohort": false,
@@ -15,41 +15,27 @@
     "createSccsEraDataArgs": {
       "naivePeriod": 365,
       "firstOutcomeOnly": true,
-      "covariateSettings": [
-        {
-          "includeCovariateIds": "exposureId",
-          "label": "Exposure of interest",
-          "stratifyById": true,
-          "start": 1,
-          "addExposedDaysToStart": false,
-          "end": 0,
-          "addExposedDaysToEnd": true,
-          "firstOccurrenceOnly": false,
-          "allowRegularization": false,
-          "attr_class": "covariateSettings"
-        },
-        {
-          "excludeCovariateIds": "exposureId",
-          "label": "All other exposures",
-          "stratifyById": true,
-          "start": 1,
-          "addExposedDaysToStart": false,
-          "end": 0,
-          "addExposedDaysToEnd": true,
-          "firstOccurrenceOnly": false,
-          "allowRegularization": true,
-          "attr_class": "covariateSettings"
-        }
-      ],
+      "covariateSettings": {
+        "includeCovariateIds": "exposureId",
+        "label": "Exposure of interest",
+        "stratifyById": true,
+        "start": 1,
+        "addExposedDaysToStart": false,
+        "end": 0,
+        "addExposedDaysToEnd": true,
+        "firstOccurrenceOnly": false,
+        "allowRegularization": false,
+        "attr_class": "covariateSettings"
+      },
       "ageSettings": {
-        "includeAge": false,
+        "includeAge": true,
         "ageKnots": 5,
         "allowRegularization": false,
         "computeConfidenceIntervals": false,
         "attr_class": "ageSettings"
       },
       "seasonalitySettings": {
-        "includeSeasonality": false,
+        "includeSeasonality": true,
         "seasonKnots": 5,
         "allowRegularization": false,
         "computeConfidenceIntervals": false,
@@ -72,7 +58,7 @@
       },
       "control": {
         "maxIterations": 1000,
-        "tolerance": 2e-007,
+        "tolerance": 1e-006,
         "convergenceType": "gradient",
         "autoSearch": true,
         "fold": 10,
@@ -85,7 +71,7 @@
         "threads": 1,
         "seed": null,
         "resetCoefficients": false,
-        "startingVariance": 0.01,
+        "startingVariance": 0.1,
         "useKKTSwindle": false,
         "tuneSwindle": 10,
         "selectorType": "byPid",
