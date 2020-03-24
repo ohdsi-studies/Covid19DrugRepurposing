@@ -97,6 +97,6 @@ execute <- function(connectionDetails,
                        maxCores = maxCores)
     
   }
-  
+  ParallelLogger:logFatal("Done")
   invisible(NULL)
 }
