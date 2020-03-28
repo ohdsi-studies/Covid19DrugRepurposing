@@ -46,57 +46,57 @@ runSelfControlledCaseSeries <- function(connectionDetails,
                                         exposureTable = "drug_era",
                                         outputFolder,
                                         maxCores) {
-    start <- Sys.time()
-    sccsFolder <- file.path(outputFolder, "selfControlledCaseSeries")
-    if (!file.exists(sccsFolder))
-        dir.create(sccsFolder)
-
-    sccsSummaryFile <- file.path(outputFolder, "sccsSummary.rds")
-    if (!file.exists(sccsSummaryFile)) {
-        eoList <- createTos(outputFolder)
-        sccsAnalysisListFile <- system.file("settings", "sccsAnalysisSettings.json", package = "Covid19DrugRepurposing")
-        sccsAnalysisList <- SelfControlledCaseSeries::loadSccsAnalysisList(sccsAnalysisListFile)
-        sccsResult <- SelfControlledCaseSeries::runSccsAnalyses(connectionDetails = connectionDetails,
-                                                                cdmDatabaseSchema = cdmDatabaseSchema,
-                                                                oracleTempSchema = oracleTempSchema,
-                                                                exposureDatabaseSchema = exposureDatabaseSchema,
-                                                                exposureTable = exposureTable,
-                                                                outcomeDatabaseSchema = outcomeDatabaseSchema,
-                                                                outcomeTable = outcomeTable,
-                                                                sccsAnalysisList = sccsAnalysisList,
-                                                                exposureOutcomeList = eoList,
-                                                                outputFolder = sccsFolder,
-                                                                combineDataFetchAcrossOutcomes = TRUE,
-                                                                compressSccsEraDataFiles = TRUE,
-                                                                getDbSccsDataThreads = min(3, maxCores),
-                                                                createSccsEraDataThreads = min(5, maxCores),
-                                                                fitSccsModelThreads = min(max(1, floor(maxCores/8)), 4),
-                                                                cvThreads =  min(10, maxCores))
-
-        sccsSummary <- SelfControlledCaseSeries::summarizeSccsAnalyses(sccsResult, sccsFolder)
-        saveRDS(sccsSummary, sccsSummaryFile)
-    }
-    delta <- Sys.time() - start
-    ParallelLogger::logInfo(paste("Completed SCCS analyses in", signif(delta, 3), attr(delta, "units")))
+  start <- Sys.time()
+  sccsFolder <- file.path(outputFolder, "selfControlledCaseSeries")
+  if (!file.exists(sccsFolder))
+    dir.create(sccsFolder)
+  
+  sccsSummaryFile <- file.path(outputFolder, "sccsSummary.rds")
+  if (!file.exists(sccsSummaryFile)) {
+    eoList <- createTos(outputFolder)
+    sccsAnalysisListFile <- system.file("settings", "sccsAnalysisSettings.json", package = "Covid19DrugRepurposing")
+    sccsAnalysisList <- SelfControlledCaseSeries::loadSccsAnalysisList(sccsAnalysisListFile)
+    sccsResult <- SelfControlledCaseSeries::runSccsAnalyses(connectionDetails = connectionDetails,
+                                                            cdmDatabaseSchema = cdmDatabaseSchema,
+                                                            oracleTempSchema = oracleTempSchema,
+                                                            exposureDatabaseSchema = exposureDatabaseSchema,
+                                                            exposureTable = exposureTable,
+                                                            outcomeDatabaseSchema = outcomeDatabaseSchema,
+                                                            outcomeTable = outcomeTable,
+                                                            sccsAnalysisList = sccsAnalysisList,
+                                                            exposureOutcomeList = eoList,
+                                                            outputFolder = sccsFolder,
+                                                            combineDataFetchAcrossOutcomes = TRUE,
+                                                            compressSccsEraDataFiles = TRUE,
+                                                            getDbSccsDataThreads = min(3, maxCores),
+                                                            createSccsEraDataThreads = min(5, maxCores),
+                                                            fitSccsModelThreads = max(1, floor(maxCores/4)),
+                                                            cvThreads =  min(4, maxCores))
+    
+    sccsSummary <- SelfControlledCaseSeries::summarizeSccsAnalyses(sccsResult, sccsFolder)
+    saveRDS(sccsSummary, sccsSummaryFile)
+  }
+  delta <- Sys.time() - start
+  ParallelLogger::logInfo(paste("Completed SCCS analyses in", signif(delta, 3), attr(delta, "units")))
 }
 
 createTos <- function(outputFolder) {
-    pathToCsv <- system.file("settings", "TosOfInterest.csv", package = "Covid19DrugRepurposing")
-    tosOfInterest <- read.csv(pathToCsv, stringsAsFactors = FALSE)
-    
-    pathToCsv <- system.file("settings", "sccsNegativeControls.csv", package = "Covid19DrugRepurposing")
-    ncs <- read.csv(pathToCsv, stringsAsFactors = FALSE)
-    allControls <- ncs
-    
-    tos <- unique(rbind(tosOfInterest[, c("exposureId", "outcomeId")],
-                        allControls[, c("exposureId", "outcomeId")]))
-    createTo <- function(i) {
-        exposureOutcome <- SelfControlledCaseSeries::createExposureOutcome(exposureId = tos$exposureId[i],
-                                                                           outcomeId = tos$outcomeId[i])
-        return(exposureOutcome)
-    }
-    tosList <- lapply(1:nrow(tos), createTo)
-    return(tosList)
+  pathToCsv <- system.file("settings", "TosOfInterest.csv", package = "Covid19DrugRepurposing")
+  tosOfInterest <- read.csv(pathToCsv, stringsAsFactors = FALSE)
+  
+  pathToCsv <- system.file("settings", "sccsNegativeControls.csv", package = "Covid19DrugRepurposing")
+  ncs <- read.csv(pathToCsv, stringsAsFactors = FALSE)
+  allControls <- ncs
+  
+  tos <- unique(rbind(tosOfInterest[, c("exposureId", "outcomeId")],
+                      allControls[, c("exposureId", "outcomeId")]))
+  createTo <- function(i) {
+    exposureOutcome <- SelfControlledCaseSeries::createExposureOutcome(exposureId = tos$exposureId[i],
+                                                                       outcomeId = tos$outcomeId[i])
+    return(exposureOutcome)
+  }
+  tosList <- lapply(1:nrow(tos), createTo)
+  return(tosList)
 }
 
 runSccsDiagnostics <- function(outputFolder = outputFolder,
@@ -111,16 +111,18 @@ runSccsDiagnostics <- function(outputFolder = outputFolder,
   pathToCsv <- system.file("settings", "sccsNegativeControls.csv", package = "Covid19DrugRepurposing")
   ncs <- read.csv(pathToCsv, stringsAsFactors = FALSE)
   ncs <- merge(ncs, sccsSummary)
-
+  
   evaluateSystematicError <- function(subset) {
-    fileName <- file.path(diagnosticsFolder, sprintf("NegativeControls_e%s.png", subset$exposureId[1]))
-    EmpiricalCalibration::plotCalibrationEffect(logRrNegatives = subset$`logRr(Exposure of interest)`,
-                                                seLogRrNegatives = subset$`seLogRr(Exposure of interest)`,
-                                                xLabel = "Incidence Rate Ratio",
-                                                title = subset$exposureName[1],
-                                                showCis = TRUE,
-                                                fileName = fileName)
-    
+    subset <- subset[!is.na(subset$`seLogRr(Exposure of interest)`), ]
+    if (nrow(subset)  != 0) {
+      fileName <- file.path(diagnosticsFolder, sprintf("NegativeControls_e%s.png", subset$exposureId[1]))
+      EmpiricalCalibration::plotCalibrationEffect(logRrNegatives = subset$`logRr(Exposure of interest)`,
+                                                  seLogRrNegatives = subset$`seLogRr(Exposure of interest)`,
+                                                  xLabel = "Incidence Rate Ratio",
+                                                  title = subset$exposureName[1],
+                                                  showCis = TRUE,
+                                                  fileName = fileName)
+    }
   }  
   lapply(split(ncs, ncs$exposureId), evaluateSystematicError)
 }

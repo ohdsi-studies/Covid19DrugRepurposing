@@ -1,7 +1,7 @@
 [
   {
     "analysisId": 1,
-    "description": "Using all other exposures, age, and season",
+    "description": "Using age, season, and pre-exposure",
     "getDbSccsDataArgs": {
       "useCustomCovariates": false,
       "useNestingCohort": false,
@@ -9,6 +9,7 @@
       "studyStartDate": "",
       "studyEndDate": "",
       "maxCasesPerOutcome": 100000,
+      "exposureIds": "exposureId",
       "customCovariateIds": "",
       "attr_class": "args"
     },
@@ -29,15 +30,15 @@
           "attr_class": "covariateSettings"
         },
         {
-          "excludeCovariateIds": "exposureId",
-          "label": "All other exposures",
+          "includeCovariateIds": "exposureId",
+          "label": "Pre-exposure",
           "stratifyById": true,
-          "start": 1,
+          "start": -30,
           "addExposedDaysToStart": false,
-          "end": 0,
-          "addExposedDaysToEnd": true,
+          "end": -1,
+          "addExposedDaysToEnd": false,
           "firstOccurrenceOnly": false,
-          "allowRegularization": true,
+          "allowRegularization": false,
           "attr_class": "covariateSettings"
         }
       ],
@@ -72,7 +73,7 @@
       },
       "control": {
         "maxIterations": 1000,
-        "tolerance": 2e-007,
+        "tolerance": 1e-006,
         "convergenceType": "gradient",
         "autoSearch": true,
         "fold": 10,
@@ -85,7 +86,7 @@
         "threads": 1,
         "seed": null,
         "resetCoefficients": false,
-        "startingVariance": 0.01,
+        "startingVariance": 0.1,
         "useKKTSwindle": false,
         "tuneSwindle": 10,
         "selectorType": "byPid",

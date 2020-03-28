@@ -1,5 +1,13 @@
 group,exposureId,exposureName
-DMARDs,1777087,Hydroxycholoroquine
-DMARDs,40171288,Tocilizumab
-DMARDs,1594587,Sarilumab
-DMARDs,1510627,Baricitinib
+Antivirals,105,Adalimumab
+Antivirals,99,Boceprevir
+Antivirals,95,Hepatis C protease inhibitors
+Antivirals,97,Navir protease inhibitors
+DMARDs,104,Baricitinib
+Antivirals,100,Peginterferon alfa-2b
+DMARDs,85,Hydroxychloroquine
+Antivirals,98,Ribavirin
+DMARDs,103,Sarilumab
+DMARDs,101,Tocilizumab
+Antivirals,36,Lopinavir
+Antivirals,96,Ritonavir

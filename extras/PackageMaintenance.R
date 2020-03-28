@@ -26,31 +26,38 @@ shell("R CMD Rd2pdf ./ --output=extras/Covid19DrugRepurposing.pdf")
 
 
 # Insert cohort definitions from ATLAS into package -----------------------
-ROhdsiWebApi::insertCohortDefinitionSetInPackage(fileName = "inst/settings/CohortsToCreate.csv",
-                                                 baseUrl = Sys.getenv("ohdsiBaseUrl"),
+ROhdsiWebApi::insertCohortDefinitionSetInPackage(fileName = "inst/settings/CohortsToCreateJnJAtlas.csv",
+                                                 baseUrl = Sys.getenv("baseUrl"),
                                                  insertTableSql = TRUE,
                                                  insertCohortCreationR = TRUE,
-                                                 generateStats = TRUE,
+                                                 generateStats = FALSE,
                                                  packageName = "Covid19DrugRepurposing")
 
+ROhdsiWebApi::insertCohortDefinitionSetInPackage(fileName = "inst/settings/CohortsToCreateCovidAtlas.csv",
+                                                 baseUrl = Sys.getenv("ohdsiCovidBaseUrl"),
+                                                 insertTableSql = TRUE,
+                                                 insertCohortCreationR = TRUE,
+                                                 generateStats = FALSE,
+                                                 packageName = "Covid19DrugRepurposing")
+
+# Merge cohorts to create files
+cohortsToCreate1 <- read.csv("inst/settings/CohortsToCreateJnJAtlas.csv")
+cohortsToCreate2 <- read.csv("inst/settings/CohortsToCreateCovidAtlas.csv")
+cohortsToCreate <- rbind(cohortsToCreate1, cohortsToCreate2)
+write.csv(cohortsToCreate, "inst/settings/CohortsToCreate.csv", row.names = FALSE)
 
 # Generate all estimation questions ---------------------------------------
-cmExposureGroups <- read.csv("extras/CmExposureGroups.csv")
 sccsExposureGroups <- read.csv("extras/SccsExposureGroups.csv")
 ncsPerExposureGroup <- read.csv("extras/NegativeControlsPerExposureGroup.csv")
 outcomesOfInterest <- read.csv("extras/OutcomesOfInterest.csv")
 
-# CohortMethod negative controls
-cmNegativeControls <- merge(cmExposureGroups, ncsPerExposureGroup)
-write.csv(cmNegativeControls, "inst/settings/NegativeControls.csv")
-
 # SCCS negative controls
 sccsNegativeControls <- merge(sccsExposureGroups, ncsPerExposureGroup)
-write.csv(sccsNegativeControls, "inst/settings/sccsNegativeControls.csv")
+write.csv(sccsNegativeControls, "inst/settings/sccsNegativeControls.csv", row.names = FALSE)
 
 # SCCS research questions of interest
 tosOfInterest <- merge(sccsExposureGroups, outcomesOfInterest)
-write.csv(tosOfInterest, "inst/settings/tosOfInterest.csv")
+write.csv(tosOfInterest, "inst/settings/tosOfInterest.csv", row.names = FALSE)
 
 
 # Create analysis details -------------------------------------------------

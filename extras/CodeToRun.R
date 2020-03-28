@@ -7,11 +7,24 @@ connectionDetails <- createConnectionDetails(dbms = "pdw",
 studyFolder <- "s:/Covid19DrugRepurposing"
 maxCores <- parallel::detectCores()
 
+# E-mail settings
+mailSettings <- list(from = Sys.getenv("mailAddress"),
+                     to = c(Sys.getenv("mailToAddress")),
+                     smtp = list(host.name = Sys.getenv("mailSmtpServer"),
+                                 port = Sys.getenv("mailSmtpPort"),
+                                 user.name = Sys.getenv("mailAddress"),
+                                 passwd = Sys.getenv("mailPassword"),
+                                 ssl = TRUE),
+                     authenticate = TRUE,
+                     send = TRUE)
+ParallelLogger::addDefaultEmailLogger(mailSettings)
+
+
 # CCAE settings
 databaseId <- "CCAE"
 cdmDatabaseSchema <- "CDM_IBM_CCAE_V1103.dbo"
 cohortDatabaseSchema <- "scratch.dbo"
-cohortTable <- "mschuemi_covid19_ccae"
+cohortTable <- "mschuemi_covid19sccs_ccae"
 oracleTempSchema <- NULL
 outputFolder <- file.path(studyFolder, databaseId)
 
@@ -19,7 +32,7 @@ outputFolder <- file.path(studyFolder, databaseId)
 databaseId <- "MDCR"
 cdmDatabaseSchema <- "CDM_IBM_MDCR_V1104.dbo"
 cohortDatabaseSchema <- "scratch.dbo"
-cohortTable <- "mschuemi_covid19_mdcr"
+cohortTable <- "mschuemi_covid19sccs_mdcr"
 oracleTempSchema <- NULL
 outputFolder <- file.path(studyFolder, databaseId)
 
@@ -27,7 +40,7 @@ outputFolder <- file.path(studyFolder, databaseId)
 databaseId <- "MDCD"
 cdmDatabaseSchema <- "CDM_IBM_MDCD_V1105.dbo"
 cohortDatabaseSchema <- "scratch.dbo"
-cohortTable <- "mschuemi_covid19_mdcd"
+cohortTable <- "mschuemi_covid19sccs_mdcd"
 oracleTempSchema <- NULL
 outputFolder <- file.path(studyFolder, databaseId)
 
@@ -35,7 +48,7 @@ outputFolder <- file.path(studyFolder, databaseId)
 databaseId <- "JMDC"
 cdmDatabaseSchema <- "CDM_JMDC_V1106.dbo"
 cohortDatabaseSchema <- "scratch.dbo"
-cohortTable <- "mschuemi_covid19_jmdc"
+cohortTable <- "mschuemi_covid19sccs_jmdc"
 oracleTempSchema <- NULL
 outputFolder <- file.path(studyFolder, databaseId)
 
@@ -43,7 +56,7 @@ outputFolder <- file.path(studyFolder, databaseId)
 databaseId <- "Optum"
 cdmDatabaseSchema <- "CDM_OPTUM_EXTENDED_DOD_V1107.dbo"
 cohortDatabaseSchema <- "scratch.dbo"
-cohortTable <- "mschuemi_covid19_optum"
+cohortTable <- "mschuemi_covid19sccs_optum"
 oracleTempSchema <- NULL
 outputFolder <- file.path(studyFolder, databaseId)
 

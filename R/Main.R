@@ -61,7 +61,16 @@ execute <- function(connectionDetails,
   }
   
   ParallelLogger::addDefaultFileLogger(file.path(outputFolder, "log.txt"))
+  
+  
+  ParallelLogger::registerLogger(ParallelLogger::createLogger(name = "STACKTRACE",
+                                                              threshold = "FATAL",
+                                                              appenders = list(ParallelLogger::createFileAppender(layout = ParallelLogger::layoutStackTrace,
+                                                                                                                  fileName = file.path(outputFolder, "errorLog.txt")))))
+  
   on.exit(ParallelLogger::unregisterLogger("DEFAULT"))
+  on.exit(ParallelLogger::unregisterLogger("STACKTRACE"), add = TRUE)
+  
   
   if (!is.null(getOption("fftempdir")) && !file.exists(getOption("fftempdir"))) {
     warning("fftempdir '", getOption("fftempdir"), "' not found. Attempting to create folder")
@@ -84,8 +93,8 @@ execute <- function(connectionDetails,
                                 cdmDatabaseSchema = cdmDatabaseSchema,
                                 outcomeDatabaseSchema = cohortDatabaseSchema,
                                 outcomeTable = cohortTable,
-                                exposureDatabaseSchema = cdmDatabaseSchema,
-                                exposureTable = "drug_era",
+                                exposureDatabaseSchema = cohortDatabaseSchema,
+                                exposureTable = cohortTable,
                                 oracleTempSchema = oracleTempSchema,
                                 outputFolder = outputFolder,
                                 maxCores = maxCores)
