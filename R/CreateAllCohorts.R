@@ -90,12 +90,12 @@ createCohorts <- function(connectionDetails,
 addCohortNames <- function(data, IdColumnName = "cohortDefinitionId", nameColumnName = "cohortName") {
   pathToCsv <- system.file("settings", "CohortsToCreate.csv", package = "Covid19DrugRepurposing")
   cohortsToCreate <- read.csv(pathToCsv)
-  pathToCsv <- system.file("settings", "sccsNegativeControls.csv", package = "Covid19DrugRepurposing")
+  pathToCsv <- system.file("settings", "NegativeControls.csv", package = "Covid19DrugRepurposing")
   negativeControls <- read.csv(pathToCsv)
   
   idToName <- data.frame(cohortId = c(cohortsToCreate$cohortId,
                                       negativeControls$outcomeId),
-                         cohortName = c(as.character(cohortsToCreate$fullName),
+                         cohortName = c(as.character(cohortsToCreate$atlasName),
                                         as.character(negativeControls$outcomeName)))
   idToName <- idToName[order(idToName$cohortId), ]
   idToName <- idToName[!duplicated(idToName$cohortId), ]

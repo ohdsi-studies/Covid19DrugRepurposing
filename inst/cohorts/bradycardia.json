@@ -4,7 +4,8 @@
     "CriteriaList": [
       {
         "ConditionOccurrence": {
-          "CodesetId": 0,
+          "CodesetId": 5,
+          "First": true,
           "ConditionTypeExclude": false
         }
       }
@@ -17,55 +18,53 @@
       "Type": ["First"]
     }
   },
+  "AdditionalCriteria": {
+    "Type": ["ALL"],
+    "CriteriaList": [
+      {
+        "Criteria": {
+          "ConditionOccurrence": {
+            "CodesetId": 5,
+            "ConditionTypeExclude": false
+          }
+        },
+        "StartWindow": {
+          "Start": {
+            "Days": 1,
+            "Coeff": 1
+          },
+          "End": {
+            "Coeff": 1
+          },
+          "UseEventEnd": false
+        },
+        "RestrictVisit": false,
+        "IgnoreObservationPeriod": false,
+        "Occurrence": {
+          "Type": 2,
+          "Count": 1,
+          "IsDistinct": false
+        }
+      }
+    ],
+    "DemographicCriteriaList": [],
+    "Groups": []
+  },
   "ConceptSets": [
     {
-      "id": 0,
-      "name": "[LEGEND HTN] hepatic failure, necrosis or coma",
+      "id": 5,
+      "name": "[LEGEND HTN] Bradycardia",
       "expression": {
         "items": [
           {
             "concept": {
-              "CONCEPT_ID": 377604,
-              "CONCEPT_NAME": "Hepatic coma",
+              "CONCEPT_ID": 4169095,
+              "CONCEPT_NAME": "Bradycardia",
               "STANDARD_CONCEPT": "S",
               "STANDARD_CONCEPT_CAPTION": "Standard",
               "INVALID_REASON": "V",
               "INVALID_REASON_CAPTION": "Valid",
-              "CONCEPT_CODE": "72836002",
-              "DOMAIN_ID": "Condition",
-              "VOCABULARY_ID": "SNOMED",
-              "CONCEPT_CLASS_ID": "Clinical Finding"
-            },
-            "isExcluded": false,
-            "includeDescendants": false,
-            "includeMapped": false
-          },
-          {
-            "concept": {
-              "CONCEPT_ID": 4029488,
-              "CONCEPT_NAME": "Hepatic encephalopathy",
-              "STANDARD_CONCEPT": "S",
-              "STANDARD_CONCEPT_CAPTION": "Standard",
-              "INVALID_REASON": "V",
-              "INVALID_REASON_CAPTION": "Valid",
-              "CONCEPT_CODE": "13920009",
-              "DOMAIN_ID": "Condition",
-              "VOCABULARY_ID": "SNOMED",
-              "CONCEPT_CLASS_ID": "Clinical Finding"
-            },
-            "isExcluded": false,
-            "includeDescendants": false,
-            "includeMapped": false
-          },
-          {
-            "concept": {
-              "CONCEPT_ID": 4245975,
-              "CONCEPT_NAME": "Hepatic failure",
-              "STANDARD_CONCEPT": "S",
-              "STANDARD_CONCEPT_CAPTION": "Standard",
-              "INVALID_REASON": "V",
-              "INVALID_REASON_CAPTION": "Valid",
-              "CONCEPT_CODE": "59927004",
+              "CONCEPT_CODE": "48867003",
               "DOMAIN_ID": "Condition",
               "VOCABULARY_ID": "SNOMED",
               "CONCEPT_CLASS_ID": "Clinical Finding"
@@ -76,13 +75,47 @@
           },
           {
             "concept": {
-              "CONCEPT_ID": 4337543,
-              "CONCEPT_NAME": "Hepatic necrosis",
+              "CONCEPT_ID": 316999,
+              "CONCEPT_NAME": "Conduction disorder of the heart",
               "STANDARD_CONCEPT": "S",
               "STANDARD_CONCEPT_CAPTION": "Standard",
               "INVALID_REASON": "V",
               "INVALID_REASON_CAPTION": "Valid",
-              "CONCEPT_CODE": "87248009",
+              "CONCEPT_CODE": "44808001",
+              "DOMAIN_ID": "Condition",
+              "VOCABULARY_ID": "SNOMED",
+              "CONCEPT_CLASS_ID": "Clinical Finding"
+            },
+            "isExcluded": false,
+            "includeDescendants": false,
+            "includeMapped": false
+          },
+          {
+            "concept": {
+              "CONCEPT_ID": 4171683,
+              "CONCEPT_NAME": "Sinus bradycardia",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "CONCEPT_CODE": "49710005",
+              "DOMAIN_ID": "Condition",
+              "VOCABULARY_ID": "SNOMED",
+              "CONCEPT_CLASS_ID": "Clinical Finding"
+            },
+            "isExcluded": false,
+            "includeDescendants": true,
+            "includeMapped": false
+          },
+          {
+            "concept": {
+              "CONCEPT_ID": 317302,
+              "CONCEPT_NAME": "Sinus node dysfunction",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "CONCEPT_CODE": "60423000",
               "DOMAIN_ID": "Condition",
               "VOCABULARY_ID": "SNOMED",
               "CONCEPT_CLASS_ID": "Clinical Finding"

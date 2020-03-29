@@ -47,14 +47,14 @@ runSelfControlledCaseSeries <- function(connectionDetails,
                                         outputFolder,
                                         maxCores) {
   start <- Sys.time()
-  sccsFolder <- file.path(outputFolder, "selfControlledCaseSeries")
+  sccsFolder <- file.path(outputFolder, "sccsOutput")
   if (!file.exists(sccsFolder))
     dir.create(sccsFolder)
   
-  sccsSummaryFile <- file.path(outputFolder, "sccsSummary.rds")
+  sccsSummaryFile <- file.path(outputFolder, "sccsSummary.csv")
   if (!file.exists(sccsSummaryFile)) {
     eoList <- createTos(outputFolder)
-    sccsAnalysisListFile <- system.file("settings", "sccsAnalysisSettings.json", package = "Covid19DrugRepurposing")
+    sccsAnalysisListFile <- system.file("settings", "sccsAnalysisList.json", package = "Covid19DrugRepurposing")
     sccsAnalysisList <- SelfControlledCaseSeries::loadSccsAnalysisList(sccsAnalysisListFile)
     sccsResult <- SelfControlledCaseSeries::runSccsAnalyses(connectionDetails = connectionDetails,
                                                             cdmDatabaseSchema = cdmDatabaseSchema,
@@ -68,13 +68,13 @@ runSelfControlledCaseSeries <- function(connectionDetails,
                                                             outputFolder = sccsFolder,
                                                             combineDataFetchAcrossOutcomes = TRUE,
                                                             compressSccsEraDataFiles = TRUE,
-                                                            getDbSccsDataThreads = min(3, maxCores),
+                                                            getDbSccsDataThreads = 1,# min(3, maxCores),
                                                             createSccsEraDataThreads = min(5, maxCores),
                                                             fitSccsModelThreads = max(1, floor(maxCores/4)),
                                                             cvThreads =  min(4, maxCores))
     
     sccsSummary <- SelfControlledCaseSeries::summarizeSccsAnalyses(sccsResult, sccsFolder)
-    saveRDS(sccsSummary, sccsSummaryFile)
+    readr::write_csv(sccsSummary, sccsSummaryFile)
   }
   delta <- Sys.time() - start
   ParallelLogger::logInfo(paste("Completed SCCS analyses in", signif(delta, 3), attr(delta, "units")))
@@ -84,7 +84,7 @@ createTos <- function(outputFolder) {
   pathToCsv <- system.file("settings", "TosOfInterest.csv", package = "Covid19DrugRepurposing")
   tosOfInterest <- read.csv(pathToCsv, stringsAsFactors = FALSE)
   
-  pathToCsv <- system.file("settings", "sccsNegativeControls.csv", package = "Covid19DrugRepurposing")
+  pathToCsv <- system.file("settings", "NegativeControls.csv", package = "Covid19DrugRepurposing")
   ncs <- read.csv(pathToCsv, stringsAsFactors = FALSE)
   allControls <- ncs
   
@@ -99,17 +99,17 @@ createTos <- function(outputFolder) {
   return(tosList)
 }
 
-runSccsDiagnostics <- function(outputFolder = outputFolder,
-                               maxCores = maxCores) {
+runSccsDiagnostics <- function(outputFolder) {
   diagnosticsFolder <- file.path(outputFolder, "sccsDiagnostics")
   if (!file.exists(diagnosticsFolder)) {
     dir.create(diagnosticsFolder)
   }
-  sccsSummaryFile <- file.path(outputFolder, "sccsSummary.rds")
-  sccsSummary <- readRDS(sccsSummaryFile)
+  sccsSummaryFile <- file.path(outputFolder, "sccsSummary.csv")
+  sccsSummary <- readr::read_csv(sccsSummaryFile, col_types = readr::cols())
   
-  pathToCsv <- system.file("settings", "sccsNegativeControls.csv", package = "Covid19DrugRepurposing")
+  pathToCsv <- system.file("settings", "NegativeControls.csv", package = "Covid19DrugRepurposing")
   ncs <- read.csv(pathToCsv, stringsAsFactors = FALSE)
+  
   ncs <- merge(ncs, sccsSummary)
   
   evaluateSystematicError <- function(subset) {
@@ -125,4 +125,64 @@ runSccsDiagnostics <- function(outputFolder = outputFolder,
     }
   }  
   lapply(split(ncs, ncs$exposureId), evaluateSystematicError)
+}
+
+dumpResultsToCsv <- function(outputFolder) {
+  diagnosticsFolder <- file.path(outputFolder, "sccsDiagnostics")
+  sccsSummaryFile <- file.path(outputFolder, "sccsSummary.csv")
+  sccsSummary <- readr::read_csv(sccsSummaryFile, col_types = readr::cols())
+  
+  pathToCsv <- system.file("settings", "NegativeControls.csv", package = "Covid19DrugRepurposing")
+  negativeControls <- read.csv(pathToCsv, stringsAsFactors = FALSE)
+  
+  calibrate <- function(subset) {
+    ncs <- merge(subset, negativeControls)
+    ncs <- ncs[!is.na(ncs$`seLogRr(Exposure of interest)`) & !is.infinite(ncs$`seLogRr(Exposure of interest)`), ]
+    if (nrow(ncs)  != 0) {
+      null <- EmpiricalCalibration::fitMcmcNull(logRr = ncs$`logRr(Exposure of interest)`,
+                                                seLogRr = ncs$`seLogRr(Exposure of interest)`)
+      calP <- EmpiricalCalibration::calibrateP(null, logRr = subset$`logRr(Exposure of interest)`,
+                                               seLogRr = subset$`seLogRr(Exposure of interest)`)
+      subset$calP <- calP$p
+      subset$calPLb <- calP$lb95ci
+      subset$calPUb <- calP$ub95ci
+      
+      model <- EmpiricalCalibration::convertNullToErrorModel(null)
+      calCi <- EmpiricalCalibration::calibrateConfidenceInterval(logRr = subset$`logRr(Exposure of interest)`,
+                                                                 seLogRr = subset$`seLogRr(Exposure of interest)`,
+                                                                 model = model)
+                                                                 
+      subset$calRr <- exp(calCi$logRr)
+      subset$calLb95Rr <- exp(calCi$logLb95Rr)
+      subset$calUb95Rr <- exp(calCi$logUb95Rr)
+      subset$calLogRr <- calCi$logRr
+      subset$calSeLogRr <- calCi$seLogRr
+    } 
+    return(subset)
+  }  
+  results <- lapply(split(sccsSummary, sccsSummary$exposureId), calibrate)
+  results <- dplyr::bind_rows(results)
+  
+  
+  results = sccsSummary
+  
+  results <- addCohortNames(data = results, IdColumnName = "exposureId", nameColumnName = "exposureName")
+  results <- addCohortNames(data = results, IdColumnName = "outcomeId", nameColumnName = "outcomeName")
+  results$negativeControl <- results$outcomeId %in% negativeControls$outcomeId
+  readr::write_csv(results, file.path(diagnosticsFolder, "allResults.csv"))
+}
+
+getAllControls <- function(outputFolder) {
+  allControlsFile <- file.path(outputFolder, "AllControls.csv")
+  if (file.exists(allControlsFile)) {
+    # Positive controls must have been synthesized. Include both positive and negative controls.
+    allControls <- read.csv(allControlsFile)
+  } else {
+    # Include only negative controls
+    pathToCsv <- system.file("settings", "NegativeControls.csv", package = "Covid19DrugRepurposing")
+    allControls <- readr::read_csv(pathToCsv, col_types = readr::cols())
+    allControls$oldOutcomeId <- allControls$outcomeId
+    allControls$targetEffectSize <- rep(1, nrow(allControls))
+  }
+  return(allControls)
 }

@@ -19,7 +19,10 @@ Imports:
     EmpiricalCalibration,
     ff,
     meta,
-    EvidenceSynthesis
+    EvidenceSynthesis,
+    dplyr,
+    tibble,
+    readr
 NeedsCompilation: no
 RoxygenNote: 7.0.2
 Encoding: UTF-8

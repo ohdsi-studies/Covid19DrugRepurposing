@@ -67,6 +67,8 @@ execute(connectionDetails = connectionDetails,
         oracleTempSchema = oracleTempSchema,
         outputFolder = outputFolder,
         createCohorts = FALSE,
-        runSccs = TRUE,
+        runSccs = FALSE,
         runSccsDiagnostics = TRUE,
         maxCores = maxCores)
+
+ParallelLogger::unregisterLogger("DEFAULT")

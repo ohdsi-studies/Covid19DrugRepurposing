@@ -14,58 +14,24 @@
       "PostDays": [0]
     },
     "PrimaryCriteriaLimit": {
-      "Type": ["First"]
+      "Type": ["All"]
     }
   },
   "ConceptSets": [
     {
       "id": 0,
-      "name": "[LEGEND HTN] hepatic failure, necrosis or coma",
+      "name": "[OHDSI Cov19] Acute respiratory distress",
       "expression": {
         "items": [
           {
             "concept": {
-              "CONCEPT_ID": 377604,
-              "CONCEPT_NAME": "Hepatic coma",
+              "CONCEPT_ID": 4191650,
+              "CONCEPT_NAME": "Acute respiratory distress",
               "STANDARD_CONCEPT": "S",
               "STANDARD_CONCEPT_CAPTION": "Standard",
               "INVALID_REASON": "V",
               "INVALID_REASON_CAPTION": "Valid",
-              "CONCEPT_CODE": "72836002",
-              "DOMAIN_ID": "Condition",
-              "VOCABULARY_ID": "SNOMED",
-              "CONCEPT_CLASS_ID": "Clinical Finding"
-            },
-            "isExcluded": false,
-            "includeDescendants": false,
-            "includeMapped": false
-          },
-          {
-            "concept": {
-              "CONCEPT_ID": 4029488,
-              "CONCEPT_NAME": "Hepatic encephalopathy",
-              "STANDARD_CONCEPT": "S",
-              "STANDARD_CONCEPT_CAPTION": "Standard",
-              "INVALID_REASON": "V",
-              "INVALID_REASON_CAPTION": "Valid",
-              "CONCEPT_CODE": "13920009",
-              "DOMAIN_ID": "Condition",
-              "VOCABULARY_ID": "SNOMED",
-              "CONCEPT_CLASS_ID": "Clinical Finding"
-            },
-            "isExcluded": false,
-            "includeDescendants": false,
-            "includeMapped": false
-          },
-          {
-            "concept": {
-              "CONCEPT_ID": 4245975,
-              "CONCEPT_NAME": "Hepatic failure",
-              "STANDARD_CONCEPT": "S",
-              "STANDARD_CONCEPT_CAPTION": "Standard",
-              "INVALID_REASON": "V",
-              "INVALID_REASON_CAPTION": "Valid",
-              "CONCEPT_CODE": "59927004",
+              "CONCEPT_CODE": "373895009",
               "DOMAIN_ID": "Condition",
               "VOCABULARY_ID": "SNOMED",
               "CONCEPT_CLASS_ID": "Clinical Finding"
@@ -76,13 +42,30 @@
           },
           {
             "concept": {
-              "CONCEPT_ID": 4337543,
-              "CONCEPT_NAME": "Hepatic necrosis",
+              "CONCEPT_ID": 4195694,
+              "CONCEPT_NAME": "Acute respiratory distress syndrome",
               "STANDARD_CONCEPT": "S",
               "STANDARD_CONCEPT_CAPTION": "Standard",
               "INVALID_REASON": "V",
               "INVALID_REASON_CAPTION": "Valid",
-              "CONCEPT_CODE": "87248009",
+              "CONCEPT_CODE": "67782005",
+              "DOMAIN_ID": "Condition",
+              "VOCABULARY_ID": "SNOMED",
+              "CONCEPT_CLASS_ID": "Clinical Finding"
+            },
+            "isExcluded": false,
+            "includeDescendants": true,
+            "includeMapped": false
+          },
+          {
+            "concept": {
+              "CONCEPT_ID": 318459,
+              "CONCEPT_NAME": "Respiratory insufficiency",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "CONCEPT_CODE": "409623005",
               "DOMAIN_ID": "Condition",
               "VOCABULARY_ID": "SNOMED",
               "CONCEPT_CLASS_ID": "Clinical Finding"
@@ -99,13 +82,19 @@
     "Type": ["First"]
   },
   "ExpressionLimit": {
-    "Type": ["First"]
+    "Type": ["All"]
   },
   "InclusionRules": [],
+  "EndStrategy": {
+    "DateOffset": {
+      "DateField": ["StartDate"],
+      "Offset": [1]
+    }
+  },
   "CensoringCriteria": [],
   "CollapseSettings": {
     "CollapseType": ["ERA"],
-    "EraPad": [0]
+    "EraPad": [30]
   },
   "CensorWindow": {}
 }

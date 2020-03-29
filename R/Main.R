@@ -102,10 +102,9 @@ execute <- function(connectionDetails,
   
   if (runSccsDiagnostics) {
     ParallelLogger::logInfo("Running SCCS diagnostics")
-    runSccsDiagnostics(outputFolder = outputFolder,
-                       maxCores = maxCores)
+    runSccsDiagnostics(outputFolder = outputFolder)
     
   }
-  ParallelLogger:logFatal("Done")
+  ParallelLogger::logFatal("Done")
   invisible(NULL)
 }

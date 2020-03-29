@@ -41,10 +41,10 @@ ROhdsiWebApi::insertCohortDefinitionSetInPackage(fileName = "inst/settings/Cohor
                                                  packageName = "Covid19DrugRepurposing")
 
 # Merge cohorts to create files
-cohortsToCreate1 <- read.csv("inst/settings/CohortsToCreateJnJAtlas.csv")
-cohortsToCreate2 <- read.csv("inst/settings/CohortsToCreateCovidAtlas.csv")
-cohortsToCreate <- rbind(cohortsToCreate1, cohortsToCreate2)
-write.csv(cohortsToCreate, "inst/settings/CohortsToCreate.csv", row.names = FALSE)
+cohortsToCreate1 <- readr::read_csv("inst/settings/CohortsToCreateJnJAtlas.csv")
+cohortsToCreate2 <- readr::read_csv("inst/settings/CohortsToCreateCovidAtlas.csv")
+cohortsToCreate <- dplyr::bind_rows(cohortsToCreate1, cohortsToCreate2)
+readr::write_csv(cohortsToCreate, "inst/settings/CohortsToCreate.csv")
 
 # Generate all estimation questions ---------------------------------------
 sccsExposureGroups <- read.csv("extras/SccsExposureGroups.csv")
@@ -53,7 +53,7 @@ outcomesOfInterest <- read.csv("extras/OutcomesOfInterest.csv")
 
 # SCCS negative controls
 sccsNegativeControls <- merge(sccsExposureGroups, ncsPerExposureGroup)
-write.csv(sccsNegativeControls, "inst/settings/sccsNegativeControls.csv", row.names = FALSE)
+write.csv(sccsNegativeControls, "inst/settings/NegativeControls.csv", row.names = FALSE)
 
 # SCCS research questions of interest
 tosOfInterest <- merge(sccsExposureGroups, outcomesOfInterest)
@@ -62,7 +62,7 @@ write.csv(tosOfInterest, "inst/settings/tosOfInterest.csv", row.names = FALSE)
 
 # Create analysis details -------------------------------------------------
 source("extras/CreateAnalysisSettings.R")
-createSccsAnalysesDetails("inst/settings/sccsAnalysisSettings.json")
+createSccsAnalysesDetails("inst/settings/sccsAnalysisList.json")
 
 # Store environment in which the study was executed -----------------------
 OhdsiRTools::insertEnvironmentSnapshotInPackage("Covid19DrugRepurposing")
