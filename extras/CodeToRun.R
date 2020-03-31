@@ -19,6 +19,7 @@ mailSettings <- list(from = Sys.getenv("mailAddress"),
                      send = TRUE)
 ParallelLogger::addDefaultEmailLogger(mailSettings)
 
+exposureIds <- c(85) # Hydroxychloroquine
 
 # CCAE settings
 databaseId <- "CCAE"
@@ -69,6 +70,7 @@ execute(connectionDetails = connectionDetails,
         createCohorts = FALSE,
         runSccs = TRUE,
         runSccsDiagnostics = TRUE,
-        maxCores = maxCores)
+        maxCores = maxCores,
+        exposureIds = exposureIds)
 
 ParallelLogger::unregisterLogger("DEFAULT")

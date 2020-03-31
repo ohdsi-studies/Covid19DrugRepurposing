@@ -44,6 +44,7 @@
 #' @param runSccsDiagnostics   Generate SCCSdiagnostics?
 #' @param maxCores             How many parallel cores should be used? If more cores are made available
 #'                             this can speed up the analyses.
+#' @param exposureIds          Optionally, restrict the analysis to a set of exposure IDs.
 #'
 #' @export
 execute <- function(connectionDetails,
@@ -55,7 +56,8 @@ execute <- function(connectionDetails,
                     createCohorts = TRUE,
                     runSccs = TRUE,
                     runSccsDiagnostics = TRUE,
-                    maxCores = 4) {
+                    maxCores = 4,
+                    exposureIds = NULL) {
   if (!file.exists(outputFolder)) {
     dir.create(outputFolder, recursive = TRUE)
   }
@@ -97,7 +99,8 @@ execute <- function(connectionDetails,
                                 exposureTable = cohortTable,
                                 oracleTempSchema = oracleTempSchema,
                                 outputFolder = outputFolder,
-                                maxCores = maxCores)
+                                maxCores = maxCores,
+                                exposureIds = exposureIds)
   }
   
   if (runSccsDiagnostics) {

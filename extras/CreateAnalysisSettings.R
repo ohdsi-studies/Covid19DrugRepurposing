@@ -33,7 +33,7 @@ createSccsAnalysesDetails <- function(fileName) {
   ageSettings <- SelfControlledCaseSeries::createAgeSettings(includeAge = TRUE)
   seasonalitySettings <- SelfControlledCaseSeries::createSeasonalitySettings(includeSeasonality = TRUE)
   
-  createSccsEraDataArgs <- SelfControlledCaseSeries::createCreateSccsEraDataArgs(naivePeriod = 365,
+  createSccsEraDataArgs1 <- SelfControlledCaseSeries::createCreateSccsEraDataArgs(naivePeriod = 365,
                                                                                  firstOutcomeOnly = TRUE,
                                                                                  covariateSettings = list(covarExposureOfInt,
                                                                                                           covarPreExp),
@@ -44,10 +44,24 @@ createSccsAnalysesDetails <- function(fileName) {
   sccsAnalysis1 <- SelfControlledCaseSeries::createSccsAnalysis(analysisId = 1,
                                                                 description = "Using age, season, and pre-exposure",
                                                                 getDbSccsDataArgs = getDbSccsDataArgs,
-                                                                createSccsEraDataArgs = createSccsEraDataArgs,
+                                                                createSccsEraDataArgs = createSccsEraDataArgs1,
+                                                                fitSccsModelArgs = fitSccsModelArgs)
+  
+  createSccsEraDataArgs2 <- SelfControlledCaseSeries::createCreateSccsEraDataArgs(naivePeriod = 365,
+                                                                                  firstOutcomeOnly = TRUE,
+                                                                                  covariateSettings = list(covarExposureOfInt,
+                                                                                                           covarPreExp),
+                                                                                  ageSettings = ageSettings,
+                                                                                  seasonalitySettings = seasonalitySettings,
+                                                                                  eventDependentObservation = TRUE)
+  
+  sccsAnalysis2 <- SelfControlledCaseSeries::createSccsAnalysis(analysisId = 2,
+                                                                description = "Adjust for age, season, pre-exposure, time-dep. obs. ",
+                                                                getDbSccsDataArgs = getDbSccsDataArgs,
+                                                                createSccsEraDataArgs = createSccsEraDataArgs2,
                                                                 fitSccsModelArgs = fitSccsModelArgs)
   
   
-  sccsAnalysisList <- list(sccsAnalysis1)
+  sccsAnalysisList <- list(sccsAnalysis1, sccsAnalysis2)
   SelfControlledCaseSeries::saveSccsAnalysisList(sccsAnalysisList, fileName)
 }

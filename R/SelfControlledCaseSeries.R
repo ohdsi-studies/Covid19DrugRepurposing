@@ -35,6 +35,7 @@
 #'                             performance.
 #' @param maxCores             How many parallel cores should be used? If more cores are made available
 #'                             this can speed up the analyses.
+#' @param exposureIds          Optionally, restrict the analysis to a set of exposure IDs.
 #'
 #' @export
 runSelfControlledCaseSeries <- function(connectionDetails,
@@ -45,7 +46,8 @@ runSelfControlledCaseSeries <- function(connectionDetails,
                                         exposureDatabaseSchema = cdmDatabaseSchema,
                                         exposureTable = "drug_era",
                                         outputFolder,
-                                        maxCores) {
+                                        maxCores,
+                                        exposureIds = NULL) {
   start <- Sys.time()
   sccsFolder <- file.path(outputFolder, "sccsOutput")
   if (!file.exists(sccsFolder))
@@ -53,7 +55,7 @@ runSelfControlledCaseSeries <- function(connectionDetails,
   
   sccsSummaryFile <- file.path(outputFolder, "sccsSummary.csv")
   if (!file.exists(sccsSummaryFile)) {
-    eoList <- createTos(outputFolder)
+    eoList <- createTos(outputFolder = outputFolder, exposureIds = exposureIds)
     sccsAnalysisListFile <- system.file("settings", "sccsAnalysisList.json", package = "Covid19DrugRepurposing")
     sccsAnalysisList <- SelfControlledCaseSeries::loadSccsAnalysisList(sccsAnalysisListFile)
     sccsResult <- SelfControlledCaseSeries::runSccsAnalyses(connectionDetails = connectionDetails,
@@ -80,7 +82,7 @@ runSelfControlledCaseSeries <- function(connectionDetails,
   ParallelLogger::logInfo(paste("Completed SCCS analyses in", signif(delta, 3), attr(delta, "units")))
 }
 
-createTos <- function(outputFolder) {
+createTos <- function(outputFolder, exposureIds = NULL) {
   pathToCsv <- system.file("settings", "TosOfInterest.csv", package = "Covid19DrugRepurposing")
   tosOfInterest <- read.csv(pathToCsv, stringsAsFactors = FALSE)
   
@@ -90,6 +92,12 @@ createTos <- function(outputFolder) {
   
   tos <- unique(rbind(tosOfInterest[, c("exposureId", "outcomeId")],
                       allControls[, c("exposureId", "outcomeId")]))
+  
+  if (!is.null(exposureIds)) {
+    ParallelLogger::logInfo("Limiting to exposure ID(s) ", paste(exposureIds, sep = ", "))
+    tos <- tos[tos$exposureId %in% exposureIds, ]
+  }
+  
   createTo <- function(i) {
     exposureOutcome <- SelfControlledCaseSeries::createExposureOutcome(exposureId = tos$exposureId[i],
                                                                        outcomeId = tos$outcomeId[i])
@@ -115,7 +123,7 @@ runSccsDiagnostics <- function(outputFolder) {
   evaluateSystematicError <- function(subset) {
     subset <- subset[!is.na(subset$`seLogRr(Exposure of interest)`), ]
     if (nrow(subset)  != 0) {
-      fileName <- file.path(diagnosticsFolder, sprintf("NegativeControls_e%s.png", subset$exposureId[1]))
+      fileName <- file.path(diagnosticsFolder, sprintf("NegativeControls_e%s_a%s.png", subset$exposureId[1], subset$analysisId[1]))
       EmpiricalCalibration::plotCalibrationEffect(logRrNegatives = subset$`logRr(Exposure of interest)`,
                                                   seLogRrNegatives = subset$`seLogRr(Exposure of interest)`,
                                                   xLabel = "Incidence Rate Ratio",
@@ -124,7 +132,7 @@ runSccsDiagnostics <- function(outputFolder) {
                                                   fileName = fileName)
     }
   }  
-  lapply(split(ncs, ncs$exposureId), evaluateSystematicError)
+  lapply(split(ncs, paste(ncs$exposureId, ncs$analysisId)), evaluateSystematicError)
 }
 
 dumpResultsToCsv <- function(outputFolder) {
