@@ -78,7 +78,7 @@ execute <- function(connectionDetails,
   }
   
   if (createCohorts) {
-    ParallelLogger::logInfo("Creating outcome cohorts")
+    ParallelLogger::logInfo("Creating outcome and exposure cohorts")
     createCohorts(connectionDetails = connectionDetails,
                   cdmDatabaseSchema = cdmDatabaseSchema,
                   cohortDatabaseSchema = cohortDatabaseSchema,

@@ -8,7 +8,7 @@
       "deleteCovariatesSmallCount": 100,
       "studyStartDate": "",
       "studyEndDate": "",
-      "maxCasesPerOutcome": 100000,
+      "maxCasesPerOutcome": 500000,
       "exposureIds": "exposureId",
       "customCovariateIds": "",
       "attr_class": "args"

@@ -67,7 +67,7 @@ execute(connectionDetails = connectionDetails,
         oracleTempSchema = oracleTempSchema,
         outputFolder = outputFolder,
         createCohorts = FALSE,
-        runSccs = FALSE,
+        runSccs = TRUE,
         runSccsDiagnostics = TRUE,
         maxCores = maxCores)
 

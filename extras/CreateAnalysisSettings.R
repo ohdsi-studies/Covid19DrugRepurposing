@@ -16,7 +16,7 @@
 
 createSccsAnalysesDetails <- function(fileName) {
   
-  getDbSccsDataArgs <- SelfControlledCaseSeries::createGetDbSccsDataArgs(maxCasesPerOutcome = 100000,
+  getDbSccsDataArgs <- SelfControlledCaseSeries::createGetDbSccsDataArgs(maxCasesPerOutcome = 500000,
                                                                          exposureIds = c("exposureId"))
   
   covarExposureOfInt <- SelfControlledCaseSeries::createCovariateSettings(label = "Exposure of interest",

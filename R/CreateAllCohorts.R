@@ -56,7 +56,7 @@ createCohorts <- function(connectionDetails,
                  oracleTempSchema = oracleTempSchema,
                  outputFolder = outputFolder)
   
-  pathToCsv <- system.file("settings", "sccsNegativeControls.csv", package = "Covid19DrugRepurposing")
+  pathToCsv <- system.file("settings", "NegativeControls.csv", package = "Covid19DrugRepurposing")
   negativeControls <- read.csv(pathToCsv)
   
   ParallelLogger::logInfo("Creating negative control outcome cohorts")

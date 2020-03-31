@@ -164,7 +164,7 @@ dumpResultsToCsv <- function(outputFolder) {
   results <- dplyr::bind_rows(results)
   
   
-  results = sccsSummary
+  # results = sccsSummary
   
   results <- addCohortNames(data = results, IdColumnName = "exposureId", nameColumnName = "exposureName")
   results <- addCohortNames(data = results, IdColumnName = "outcomeId", nameColumnName = "outcomeName")
