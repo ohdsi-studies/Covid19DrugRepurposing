@@ -177,6 +177,13 @@ dumpResultsToCsv <- function(outputFolder) {
   results <- addCohortNames(data = results, IdColumnName = "exposureId", nameColumnName = "exposureName")
   results <- addCohortNames(data = results, IdColumnName = "outcomeId", nameColumnName = "outcomeName")
   results$negativeControl <- results$outcomeId %in% negativeControls$outcomeId
+  results$description <- "Primary analysis"
+  results$description[results$analysisId == 2] <- "Adjusting for event-dependent observation"
+  results <- results[!results$negativeControl, ]
+  
+  results <- results[, c("exposureName", "outcomeName", "description", "caseCount", "rr(Exposure of interest)", "ci95lb(Exposure of interest)", "ci95ub(Exposure of interest)", "calP", "calRr", "calLb95Rr", "calUb95Rr")]
+  colnames(results) <- c("Exposure", "Outcome", "Analysis", "Cases", "IRR", "CI95LB", "CI95UB", "Calibrated P", "Calibrated IRR", "Calibrated CI95LB", "Calibrated CI95UB")
+  results <- results[order(results$Exposure, results$Outcome, results$Analysis), ]
   readr::write_csv(results, file.path(diagnosticsFolder, "allResults.csv"))
 }
 
