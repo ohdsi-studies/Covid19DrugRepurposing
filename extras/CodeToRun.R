@@ -61,6 +61,14 @@ cohortTable <- "mschuemi_covid19sccs_optum"
 oracleTempSchema <- NULL
 outputFolder <- file.path(studyFolder, databaseId)
 
+# CPRD settings
+databaseId <- "CPRD"
+cdmDatabaseSchema <- "CDM_CPRD_V1102.dbo"
+cohortDatabaseSchema <- "scratch.dbo"
+cohortTable <- "mschuemi_covid19sccs_cprd"
+oracleTempSchema <- NULL
+outputFolder <- file.path(studyFolder, databaseId)
+
 execute(connectionDetails = connectionDetails,
         cdmDatabaseSchema = cdmDatabaseSchema,
         cohortDatabaseSchema = cohortDatabaseSchema,

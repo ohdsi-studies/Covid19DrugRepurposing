@@ -13,8 +13,6 @@ angioedema,Angioedema events,7377,7377
 cardiacArrhythmia,Person with cardiac arrhythmia,7399,7399
 bradycardia,Persons with bradycardia,7404,7404
 gastrointestinalBleeding,Gastrointestinal bleeding events,7376,7376
-allCauseMortality,All-cause mortality,7361,7361
-cardiovascularRelatedMortality,Cardiovascular-related mortality,7362,7362
 transientIschemicAttack,Transient ischemic attack events,7370,7370
 stroke,Stroke (ischemic or hemorrhagic) events,7464,7464
 acuteMyocardialInfarction,Acute myocardial infarction events,7364,7364

@@ -70,7 +70,7 @@ runSelfControlledCaseSeries <- function(connectionDetails,
                                                             outputFolder = sccsFolder,
                                                             combineDataFetchAcrossOutcomes = TRUE,
                                                             compressSccsEraDataFiles = TRUE,
-                                                            getDbSccsDataThreads = 1,# min(3, maxCores),
+                                                            getDbSccsDataThreads = min(3, maxCores),
                                                             createSccsEraDataThreads = min(5, maxCores),
                                                             fitSccsModelThreads = max(1, floor(maxCores/4)),
                                                             cvThreads =  min(4, maxCores))

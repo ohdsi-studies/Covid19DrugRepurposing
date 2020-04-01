@@ -13,8 +13,6 @@ outcomeId,outcomeName
 7399,cardiacArrhythmia
 7404,bradycardia
 7376,gastrointestinalBleeding
-7361,allCauseMortality
-7362,cardiovascularRelatedMortality
 7370,transientIschemicAttack
 7464,stroke
 7364,acuteMyocardialInfarction
