@@ -75,9 +75,11 @@ execute(connectionDetails = connectionDetails,
         cohortTable = cohortTable,
         oracleTempSchema = oracleTempSchema,
         outputFolder = outputFolder,
+        databaseId = databaseId,
         createCohorts = FALSE,
-        runSccs = TRUE,
+        runSccs = FALSE,
         runSccsDiagnostics = TRUE,
+        generateBasicOutputTable = TRUE,
         maxCores = maxCores,
         exposureIds = exposureIds)
 

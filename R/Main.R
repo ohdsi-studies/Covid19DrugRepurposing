@@ -39,9 +39,12 @@
 #' @param outputFolder         Name of local folder to place results; make sure to use forward slashes
 #'                             (/). Do not use a folder on a network drive since this greatly impacts
 #'                             performance.
+#' @param databaseId           A short unique identifier for the database. Will be used to generate
+#'                             file names. 
 #' @param createCohorts        Create the cohortTable table with the exposure and outcome cohorts?
 #' @param runSccs              Perform the SCCS analyses? Requires the cohorts have been created.
 #' @param runSccsDiagnostics   Generate SCCSdiagnostics?
+#' @param generateBasicOutputTable Genenerate a basic table with effect size estimates?
 #' @param maxCores             How many parallel cores should be used? If more cores are made available
 #'                             this can speed up the analyses.
 #' @param exposureIds          Optionally, restrict the analysis to a set of exposure IDs.
@@ -53,9 +56,11 @@ execute <- function(connectionDetails,
                     cohortTable = "cohort",
                     oracleTempSchema = cohortDatabaseSchema,
                     outputFolder,
+                    databaseId,
                     createCohorts = TRUE,
                     runSccs = TRUE,
                     runSccsDiagnostics = TRUE,
+                    generateBasicOutputTable = TRUE,
                     maxCores = 4,
                     exposureIds = NULL) {
   if (!file.exists(outputFolder)) {
@@ -63,15 +68,10 @@ execute <- function(connectionDetails,
   }
   
   ParallelLogger::addDefaultFileLogger(file.path(outputFolder, "log.txt"))
+  ParallelLogger::addDefaultErrorReportLogger()
   
-  
-  ParallelLogger::registerLogger(ParallelLogger::createLogger(name = "STACKTRACE",
-                                                              threshold = "FATAL",
-                                                              appenders = list(ParallelLogger::createFileAppender(layout = ParallelLogger::layoutStackTrace,
-                                                                                                                  fileName = file.path(outputFolder, "errorLog.txt")))))
-  
-  on.exit(ParallelLogger::unregisterLogger("DEFAULT"))
-  on.exit(ParallelLogger::unregisterLogger("STACKTRACE"), add = TRUE)
+  on.exit(ParallelLogger::unregisterLogger("DEFAULT_FILE_LOGGER", silent = TRUE))
+  on.exit(ParallelLogger::unregisterLogger("DEFAULT_ERRORREPORT_LOGGER", silent = TRUE), add = TRUE)
   
   
   if (!is.null(getOption("fftempdir")) && !file.exists(getOption("fftempdir"))) {
@@ -105,9 +105,13 @@ execute <- function(connectionDetails,
   
   if (runSccsDiagnostics) {
     ParallelLogger::logInfo("Running SCCS diagnostics")
-    runSccsDiagnostics(outputFolder = outputFolder)
-    
+    runSccsDiagnostics(outputFolder = outputFolder, databaseId = databaseId)
   }
+  
+  if (generateBasicOutputTable) {
+    generateBasicOutputTable(outputFolder = outputFolder, databaseId = databaseId) 
+  }
+  ParallelLogger::unregisterLogger("DEFAULT_ERRORREPORT_LOGGER")
   ParallelLogger::logFatal("Done")
   invisible(NULL)
 }

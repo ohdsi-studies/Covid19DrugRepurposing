@@ -107,7 +107,7 @@ createTos <- function(outputFolder, exposureIds = NULL) {
   return(tosList)
 }
 
-runSccsDiagnostics <- function(outputFolder) {
+runSccsDiagnostics <- function(outputFolder, databaseId) {
   diagnosticsFolder <- file.path(outputFolder, "sccsDiagnostics")
   if (!file.exists(diagnosticsFolder)) {
     dir.create(diagnosticsFolder)
@@ -123,11 +123,16 @@ runSccsDiagnostics <- function(outputFolder) {
   evaluateSystematicError <- function(subset) {
     subset <- subset[!is.na(subset$`seLogRr(Exposure of interest)`), ]
     if (nrow(subset)  != 0) {
-      fileName <- file.path(diagnosticsFolder, sprintf("NegativeControls_e%s_a%s.png", subset$exposureId[1], subset$analysisId[1]))
+      fileName <- file.path(diagnosticsFolder, sprintf("NegativeControls_e%s_a%s_%s.png", subset$exposureId[1], subset$analysisId[1], databaseId))
+      if (subset$analysisId[1] == 1) {
+        title <- "Primary analysis" 
+      } else {
+        title <- "Adjusting for event-dependent observation" 
+      }
       EmpiricalCalibration::plotCalibrationEffect(logRrNegatives = subset$`logRr(Exposure of interest)`,
                                                   seLogRrNegatives = subset$`seLogRr(Exposure of interest)`,
                                                   xLabel = "Incidence Rate Ratio",
-                                                  title = subset$exposureName[1],
+                                                  title = title,
                                                   showCis = TRUE,
                                                   fileName = fileName)
     }
@@ -135,7 +140,7 @@ runSccsDiagnostics <- function(outputFolder) {
   lapply(split(ncs, paste(ncs$exposureId, ncs$analysisId)), evaluateSystematicError)
 }
 
-dumpResultsToCsv <- function(outputFolder) {
+generateBasicOutputTable <- function(outputFolder, databaseId) {
   diagnosticsFolder <- file.path(outputFolder, "sccsDiagnostics")
   sccsSummaryFile <- file.path(outputFolder, "sccsSummary.csv")
   sccsSummary <- readr::read_csv(sccsSummaryFile, col_types = readr::cols())
@@ -170,12 +175,8 @@ dumpResultsToCsv <- function(outputFolder) {
   }  
   results <- lapply(split(sccsSummary, sccsSummary$exposureId), calibrate)
   results <- dplyr::bind_rows(results)
-  
-  
-  # results = sccsSummary
-  
-  results <- addCohortNames(data = results, IdColumnName = "exposureId", nameColumnName = "exposureName")
-  results <- addCohortNames(data = results, IdColumnName = "outcomeId", nameColumnName = "outcomeName")
+  results <- Covid19DrugRepurposing:::addCohortNames(data = results, IdColumnName = "exposureId", nameColumnName = "exposureName")
+  results <- Covid19DrugRepurposing:::addCohortNames(data = results, IdColumnName = "outcomeId", nameColumnName = "outcomeName")
   results$negativeControl <- results$outcomeId %in% negativeControls$outcomeId
   results$description <- "Primary analysis"
   results$description[results$analysisId == 2] <- "Adjusting for event-dependent observation"
@@ -184,7 +185,7 @@ dumpResultsToCsv <- function(outputFolder) {
   results <- results[, c("exposureName", "outcomeName", "description", "caseCount", "rr(Exposure of interest)", "ci95lb(Exposure of interest)", "ci95ub(Exposure of interest)", "calP", "calRr", "calLb95Rr", "calUb95Rr")]
   colnames(results) <- c("Exposure", "Outcome", "Analysis", "Cases", "IRR", "CI95LB", "CI95UB", "Calibrated P", "Calibrated IRR", "Calibrated CI95LB", "Calibrated CI95UB")
   results <- results[order(results$Exposure, results$Outcome, results$Analysis), ]
-  readr::write_csv(results, file.path(diagnosticsFolder, "allResults.csv"))
+  readr::write_csv(results, file.path(diagnosticsFolder, sprintf("allResults_%s.csv", databaseId)))
 }
 
 getAllControls <- function(outputFolder) {

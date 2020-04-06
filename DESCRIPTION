@@ -16,7 +16,7 @@ Imports:
 	SelfControlledCaseSeries,
     ParallelLogger,
     Cyclops,
-    EmpiricalCalibration,
+    EmpiricalCalibration (>= 1.1.3),
     ff,
     meta,
     EvidenceSynthesis,
